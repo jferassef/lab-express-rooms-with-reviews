@@ -5,4 +5,6 @@ router.get("/", (req, res, next) => {
   res.render("index");
 });
 
+router.use("/rooms", require("./rooms.routes"));
+
 module.exports = router;

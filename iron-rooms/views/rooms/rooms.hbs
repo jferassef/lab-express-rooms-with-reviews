@@ -1,5 +1,5 @@
 <div class="container">
-  <h1>Rooms </h1>
+  <h1>Rooms</h1>
   {{#each rooms}}
     <div class="room-row">
       <a href="/rooms/{{this._id}}">{{this.name}}</a>
@@ -13,4 +13,5 @@
       </div>
     </div>
   {{/each}}
+   <a href="/rooms/room-create" class="btn btn-dark">Create Room</a>
 </div>

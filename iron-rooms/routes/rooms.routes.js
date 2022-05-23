@@ -15,14 +15,14 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/room-create", (req, res, next) => {
+router.get("/create", (req, res, next) => {
   res.render("rooms/room-create");
 });
 
-router.post("/room-create", async (req, res, next) => {
+router.post("/create", async (req, res, next) => {
   try {
     const { name, description, imageUrl, owner, reviews } = req.body;
-    await Book.create({
+    await Room.create({
       name,
       description,
       imageUrl,
@@ -35,3 +35,5 @@ router.post("/room-create", async (req, res, next) => {
     next(error);
   }
 });
+
+module.exports = router;

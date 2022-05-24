@@ -1,3 +1,17 @@
+<h2>Available Rooms</h2>
+<div>
+    {{#each rooms}}
+    <h1>{{this.name}}</h1>
+    <p>Description: {{this.description}}</p>
+    <a href="/drones/{{this._id}}/edit" class="btn btn-primary">Edit</a>
+    <form action="/drones/{{this._id}}/delete" method="post">
+      <button class="btn btn-danger" type="submit">Delete room</button>
+    </form>
+    {{/each}}
+</div>
+<a href="/rooms/room-create" class="btn btn-dark">Create Room</a>
+
+<!--
 <div class="container">
   <h1>Rooms</h1>
   {{#each rooms}}
@@ -15,3 +29,4 @@
   {{/each}}
    <a href="/rooms/room-create" class="btn btn-dark">Create Room</a>
 </div>
+-->

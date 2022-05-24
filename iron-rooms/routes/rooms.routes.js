@@ -2,10 +2,12 @@
 const router = require("express").Router();
 const { isLoggedIn } = require("../middleware/isLoggedIn");
 const Room = require("../models/Room.model");
+const Review = require("../models/Review.model");
+const User = require("../models/User.model");
 
 router.get("/", async (req, res, next) => {
   try {
-    const rooms = await Room.find();
+    const rooms = await Room.find(); //.populate("owner");
     res.render("rooms/rooms", {
       rooms,
       // isLoggedIn: req.session.currentUser,
@@ -69,6 +71,17 @@ router.post("/rooms/:id/delete", async (req, res, next) => {
   } catch (error) {
     console.log(error);
   }
+});
+
+router.get("/:id", async (req, res) => {
+  try {
+    await Room.findById(req.params.id)
+      // .populate("owner")
+      .populate({ path: "reviews", populate: { path: "user" } })
+      .then((results) => {
+        res.render("rooms/room", results);
+      });
+  } catch (error) {}
 });
 
 module.exports = router;

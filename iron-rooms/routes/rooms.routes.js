@@ -8,18 +8,18 @@ router.get("/", async (req, res, next) => {
     const rooms = await Room.find();
     res.render("rooms/rooms", {
       rooms,
-      isLoggedIn: req.session.currentUser,
+      // isLoggedIn: req.session.currentUser,
     });
   } catch (error) {
     next(error);
   }
 });
 
-router.get("/create", (req, res, next) => {
+router.get("/room-create", (req, res, next) => {
   res.render("rooms/room-create");
 });
 
-router.post("/create", async (req, res, next) => {
+router.post("/room-create", async (req, res, next) => {
   try {
     const { name, description, imageUrl, owner, reviews } = req.body;
     await Room.create({
@@ -30,9 +30,44 @@ router.post("/create", async (req, res, next) => {
       reviews,
     });
 
-    res.redirect("/rooms");
+    res.redirect("rooms/rooms");
   } catch (error) {
     next(error);
+  }
+});
+
+router.get("/rooms/:id/edit", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const room = await Room.findById(id);
+    res.render("rooms/update-form", room);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.post("/rooms/:id/edit", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { name, description, imageUrl, owner, reviews } = req.body;
+    await Room.findByIdAndUpdate(
+      id,
+      { name, description, imageUrl, owner, reviews },
+      { new: true }
+    );
+    res.redirect("/rooms");
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.post("/rooms/:id/delete", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await Room.findByIdAndDelete(id);
+    res.redirect("/rooms");
+  } catch (error) {
+    console.log(error);
   }
 });
 

@@ -1,17 +1,15 @@
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <h1>Create Room</h1>
-
+            <h1>Edit Room</h1>
             <hr>
-
-            <form action="/room-create" method="POST">
+            <form action="/rooms/{{_id}}/edit" method="POST">
 
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
-                    <input  type="text" class="form-control" id="name" name="name">
+                    <input type="text" class="form-control" id="title" name="name" value="{{name}}">
                 </div>
-
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
                     <input type="text" class="form-control" id="description" name="description">
@@ -31,8 +29,8 @@
                     <input type="text" class="form-control" id="reviews" name="reviews">
                 </div>
 
-
-                <button type="submit" class="btn btn-dark">Create new room</button>
+               
+                <button type="submit" class="btn btn-dark">Update Drone</button>
                 <a href="/" class="btn btn-dark">Go back</a>
             </form>
             <hr>

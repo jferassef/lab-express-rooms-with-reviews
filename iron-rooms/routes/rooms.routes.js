@@ -7,7 +7,9 @@ const User = require("../models/User.model");
 
 router.get("/", async (req, res, next) => {
   try {
-    const rooms = await Room.find(); //.populate("owner");
+    await Review.find();
+    const rooms = await Room.find().populate("Review");
+
     res.render("rooms/rooms", {
       rooms,
       // isLoggedIn: req.session.currentUser,
@@ -23,22 +25,22 @@ router.get("/room-create", (req, res, next) => {
 
 router.post("/room-create", async (req, res, next) => {
   try {
-    const { name, description, imageUrl, owner, reviews } = req.body;
+    const { name, description, imageUrl } = req.body;
     await Room.create({
       name,
       description,
       imageUrl,
-      owner,
-      reviews,
+      owner: req.session.currentUser._id,
+      // reviews,
     });
 
-    res.redirect("rooms/rooms");
+    res.redirect("/rooms");
   } catch (error) {
     next(error);
   }
 });
 
-router.get("/rooms/:id/edit", async (req, res, next) => {
+router.get("/:id/edit", async (req, res, next) => {
   try {
     const { id } = req.params;
     const room = await Room.findById(id);
@@ -48,7 +50,7 @@ router.get("/rooms/:id/edit", async (req, res, next) => {
   }
 });
 
-router.post("/rooms/:id/edit", async (req, res, next) => {
+router.post("/:id/edit", async (req, res, next) => {
   try {
     const { id } = req.params;
     const { name, description, imageUrl, owner, reviews } = req.body;
@@ -63,7 +65,7 @@ router.post("/rooms/:id/edit", async (req, res, next) => {
   }
 });
 
-router.post("/rooms/:id/delete", async (req, res, next) => {
+router.post("/:id/delete", async (req, res, next) => {
   try {
     const { id } = req.params;
     await Room.findByIdAndDelete(id);

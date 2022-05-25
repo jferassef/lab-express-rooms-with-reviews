@@ -8,7 +8,7 @@ const User = require("../models/User.model");
 router.get("/", async (req, res, next) => {
   try {
     await Review.find();
-    const rooms = await Room.find().populate("Review");
+    const rooms = await Room.find(); // .populate("Review");
 
     res.render("rooms/rooms", {
       rooms,
@@ -24,13 +24,16 @@ router.get("/room-create", (req, res, next) => {
 });
 
 router.post("/room-create", async (req, res, next) => {
+  const { session } = req;
+  console.log({ session });
+
   try {
     const { name, description, imageUrl } = req.body;
     await Room.create({
       name,
       description,
       imageUrl,
-      owner: req.session.currentUser._id,
+      owner: req.session.user._id,
       // reviews,
     });
 

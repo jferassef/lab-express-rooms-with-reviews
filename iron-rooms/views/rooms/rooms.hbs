@@ -3,8 +3,8 @@
     {{#each rooms}}
     <h1>{{this.name}}</h1>
     <p>Description: {{this.description}}</p>
-    <a href="/drones/{{this._id}}/edit" class="btn btn-primary">Edit</a>
-    <form action="/drones/{{this._id}}/delete" method="post">
+    <a href="/rooms/{{this._id}}/edit" class="btn btn-primary">Edit</a>
+    <form action="/rooms/{{this._id}}/delete" method="post">
       <button class="btn btn-danger" type="submit">Delete room</button>
     </form>
     {{/each}}

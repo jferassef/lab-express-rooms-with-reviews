@@ -9,7 +9,7 @@
     <p>Description: {{description}}</p>
     <p>Room Owner: {{owner.fullName}}  |  {{owner.email}}</p>
     <br>
-    <form action="/rooms/{{_id}}/add-comment" method="post">
+    <form action="/rooms/{{_id}}/comment" method="post">
         <textarea name="comment" cols="30" rows="7" placeholder="Enter your comment here!"></textarea>
         <br>
         <button type="submit">Comment</button>

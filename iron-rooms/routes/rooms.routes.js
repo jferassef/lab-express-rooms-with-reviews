@@ -8,7 +8,7 @@ const User = require("../models/User.model");
 router.get("/", async (req, res, next) => {
   try {
     await Review.find();
-    const rooms = await Room.find(); // .populate("Review");
+    const rooms = await Room.find();
 
     res.render("rooms/rooms", {
       rooms,
@@ -80,13 +80,25 @@ router.post("/:id/delete", async (req, res, next) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    await Room.findById(req.params.id)
-      // .populate("owner")
-      .populate({ path: "reviews", populate: { path: "user" } })
-      .then((results) => {
-        res.render("rooms/room", results);
-      });
-  } catch (error) {}
+    const results = await Room.findById(req.params.id)
+      .populate("owner")
+      .populate({ path: "reviews", populate: { path: "user" } });
+    res.render("rooms/room", results);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.post("/:id/comment", async (req, res, next) => {
+  const { comment } = req.body;
+  const { _id: commentId } = await Review.create({
+    user: req.session.user,
+    comment,
+  });
+  await Room.findByIdAndUpdate(req.params.id, {
+    $push: { reviews: commentId },
+  });
+  res.redirect(`/rooms/${req.params.id}`);
 });
 
 module.exports = router;

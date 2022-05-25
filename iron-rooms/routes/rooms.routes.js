@@ -1,6 +1,6 @@
 //TODO import the routes
 const router = require("express").Router();
-const { isLoggedIn } = require("../middleware/isLoggedIn");
+const isLoggedIn = require("../middleware/isLoggedIn");
 const Room = require("../models/Room.model");
 const Review = require("../models/Review.model");
 const User = require("../models/User.model");
@@ -9,10 +9,8 @@ router.get("/", async (req, res, next) => {
   try {
     await Review.find();
     const rooms = await Room.find();
-
     res.render("rooms/rooms", {
       rooms,
-      // isLoggedIn: req.session.currentUser,
     });
   } catch (error) {
     next(error);
@@ -43,7 +41,7 @@ router.post("/room-create", async (req, res, next) => {
   }
 });
 
-router.get("/:id/edit", async (req, res, next) => {
+router.get("/:id/edit", isLoggedIn, async (req, res, next) => {
   try {
     const { id } = req.params;
     const room = await Room.findById(id);
@@ -53,7 +51,7 @@ router.get("/:id/edit", async (req, res, next) => {
   }
 });
 
-router.post("/:id/edit", async (req, res, next) => {
+router.post("/:id/edit", isLoggedIn, async (req, res, next) => {
   try {
     const { id } = req.params;
     const { name, description, imageUrl, owner, reviews } = req.body;
